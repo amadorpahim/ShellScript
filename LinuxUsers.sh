@@ -12,6 +12,7 @@
 
 Add(){
 
+# Recebe parâmetros adicinais para cadastro do usuário (-b, -h, -p e -u)
 while getopts ":b:h:p:u:" Opt
 do
 	case $Opt in
@@ -38,26 +39,31 @@ do
 	esac
 done
 
+# Solicitar o shell, caso o "-s" não tenha sido usado
 while [ ! $Bash ] 
 do
 	read -p "Informe o shell: " Bash
 done
 
+# Solicitar o home, caso o "-h" não tenha sido usado
 while [ ! $Home ] 
 do
 	read -p "Informe o home: " Home
 done
 
+# Solicitar a senha, caso o "-p" não tenha sido usado
 while [ ! $Password ] 
 do
 	read -s -p "Informe a senha: " Password
 done
 
+# Solicitar o username, caso o "-u" não tenha sido usado
 while [ ! $User ] 
 do
 	read -p "Informe o usuario: " User
 done
 
+# Adicionando o usuário e definindo a senha
 useradd -s "$Bash" -d "$Home" "$User" && {
 	echo "Usuário $User criado com sucesso"
 	echo "$Password" | passwd --stdin "$User" 
@@ -70,6 +76,7 @@ useradd -s "$Bash" -d "$Home" "$User" && {
 
 Remove(){
 
+# Recebe parâmetro adicional para remoção do usuário (-u)
 while getopts ":u:" Opt
 do
         case $Opt in
@@ -87,11 +94,13 @@ do
         esac
 done
 
+# Solicitar o username, caso o "-u" não tenha sido usado
 while [ ! $User ] 
 do
         read -p "Informe o usuario: " User
 done
 
+# Removendo o usuário
 userdel -r $User  && {
         echo "Usuário $User removido com sucesso"
 } || {  
@@ -101,6 +110,7 @@ userdel -r $User  && {
 }
 
 
+# Recebe opções "-a" ou "-d" para chamar a função correspondente
 while getopts ":ad" Opt
 do
 	case $Opt in
