@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Script para criação/remoção de usuários no Linux.
-# 
+# Trata-se de uma reimplementação simplória do "useradd" com finalidade acadêmica 
 #
 # USO:
 ## Adicionar usuário
