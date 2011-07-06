@@ -1,4 +1,5 @@
 #!/bin/bash
+# Script para automatizar a configuração do AP5131 Motorola
 
 export http_proxy=""
 
