@@ -8,7 +8,8 @@
 ### ./LinuxUsers.sh -a -b /bin/bash -h /home/username -p senha -u username
 ## Remover usuário
 ### ./LinuxUsers.sh -d username
-
+#
+#
 
 Add(){
 
