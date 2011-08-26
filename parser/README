@@ -1,0 +1,20 @@
+# Esse é um parser para permitir o uso de um
+# arquivo de configurações.
+# Cada chave do arquvio de configurações será
+# transformada em uma variável, que será preenchida
+# com o valor correspondente.
+
+# Uso:
+
+# No arquivo de configuração, use o formato:
+chave = valor
+chave2 = valor 2
+
+# Crie uma variável "config_file", contendo o caminho
+# do arquivo de configuração que será usado.
+
+# Carregue o parser em seu script, após a atribuição da
+# variável "config_file":
+
+source /path/to/parser.sh
+
