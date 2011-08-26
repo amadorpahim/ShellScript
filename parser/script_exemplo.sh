@@ -11,3 +11,4 @@ source parser.sh
 echo O nome é: $nome
 echo A porta é: $porta
 echo O host é: $host
+echo Protocolo é: $protocolo
