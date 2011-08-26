@@ -1,0 +1,5 @@
+http_access allow gerencia
+http_access deny lab1
+http_access allow recepcao
+http_access deny teste
+http_access allow teste1

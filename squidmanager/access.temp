@@ -1,0 +1,4 @@
+http_access deny gerencia videos
+http_access allow lab1 videos
+http_access deny recepcao videos
+http_access allow teste videos

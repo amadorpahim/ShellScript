@@ -1,0 +1,56 @@
+# Gerado em Qua Fev 11 08:44:08 BRST 2009
+http_port 3128
+icp_port 3130
+hierarchy_stoplist cgi-bin ?
+acl QUERY urlpath_regex cgi-bin \?
+cache deny QUERY
+refresh_pattern ^ftp:		1440	20%	10080
+refresh_pattern ^gopher:	1440	0%	1440
+refresh_pattern .		0	20%	4320
+acl all src 0.0.0.0/0.0.0.0
+acl manager proto cache_object
+acl localhost src 127.0.0.1/255.255.255.255
+acl to_localhost dst 127.0.0.0/8
+acl SSL_ports port 443
+acl Safe_ports port 80		# http
+acl Safe_ports port 21		# ftp
+acl Safe_ports port 443		# https
+acl Safe_ports port 70		# gopher
+acl Safe_ports port 210		# wais
+acl Safe_ports port 1025-65535	# unregistered ports
+acl Safe_ports port 280		# http-mgmt
+acl Safe_ports port 488		# gss-http
+acl Safe_ports port 591		# filemaker
+acl Safe_ports port 777		# multiling http
+acl CONNECT method CONNECT
+#######################
+
+##### ACLS MANAGER ####
+acl gerencia src "/etc/squid3/manager/grupoip/gerencia"
+acl lab1 src "/etc/squid3/manager/grupoip/lab1"
+acl recepcao src "/etc/squid3/manager/grupoip/recepcao"
+acl teste src "/etc/squid3/manager/grupoip/teste"
+acl videos url_regex "/etc/squid3/manager/gruposite/videos"
+
+##### ACCESS MANAGER ####
+http_access allow lab1 videos
+http_access allow teste videos
+http_access deny gerencia videos
+http_access deny recepcao videos
+
+##### ACCESS DEFAULTS ########
+http_access allow gerencia
+http_access deny lab1
+http_access allow recepcao
+http_access deny teste
+http_access allow teste1
+
+#######################
+http_access allow manager localhost
+http_access deny manager
+http_access deny !Safe_ports
+http_access deny CONNECT !SSL_ports
+http_access allow localhost
+http_reply_access allow all
+icp_access allow all
+coredump_dir /var/spool/squid3
