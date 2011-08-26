@@ -13,6 +13,6 @@ do
 	key=$(echo $LINE | cut -d "=" -f 1)
 	# pegando o valor da linha
 	value=$(echo $LINE | cut -d "=" -f 2)
-	# criando a variável com mesmo nome da chame e atribuindo o valor
+	# criando a variável com mesmo nome da chave e atribuindo o valor
 	eval $key=\"${value}\"
 done
