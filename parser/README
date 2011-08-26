@@ -4,17 +4,25 @@
 # transformada em uma variável, que será preenchida
 # com o valor correspondente.
 
-# Uso:
-
+## Uso:
 # No arquivo de configuração, use o formato:
+
 chave = valor
 chave2 = valor 2
+chave3 = meu valor # posso colocar comentários
 
-# Crie uma variável "config_file", contendo o caminho
-# do arquivo de configuração que será usado.
+# Em seu script, crie uma variável "config_file",
+# contendo o caminho do arquivo de configurações
+# que será usado.
 
-# Carregue o parser em seu script, após a atribuição da
-# variável "config_file":
+config_file="/path/to/config.cfg"
+
+# Ainda no seu script, carregue o parser depois da
+# atribuição da variável "config_file":
 
 source /path/to/parser.sh
 
+# Agora você pode usar qualquer chave do arquivo
+# de configurações:
+
+echo "Minha chave 3 é: $chave3"
