@@ -1,9 +1,9 @@
 #!/bin/bash
-
-while read LINE 
+IFS="
+"
+for LINE in $(cat $config_file | sed 's/#.*//g;s/ = /=/g;/^$/d') 
 do
-	key=$(echo $LINE | sed 's/ = /=/g' | cut -d "=" -f 1)
-	value=$(echo $LINE | sed 's/ = /=/g' | cut -d "=" -f 2)
+	key=$(echo $LINE | cut -d "=" -f 1)
+	value=$(echo $LINE | cut -d "=" -f 2)
 	eval $key=\"${value}\"
-
-done < $config_file
+done
