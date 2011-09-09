@@ -65,11 +65,7 @@ case $1 in
 	stop)
 		stop
 	;;
-	restart)
-		stop
-		start
-	;;
 	*)
-		echo "Use: $0 { start | stop | restart }"
+		echo "Use: $0 { start | stop }"
 	;;
 esac
