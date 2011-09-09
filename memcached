@@ -1,0 +1,73 @@
+#!/bin/bash
+# chkconfig: 2345 80 20
+# description: memcached
+
+
+instances=4
+start_port=11211
+memory=750
+threads=3
+user=memcached
+connections=1024
+
+options="-r -L -R 30 -U 0"
+cmd="/usr/local/memcached/bin/memcached"
+piddir="/var/run/memcached"
+
+
+start(){
+
+for ((i=1;i<=$instances;i++))
+do
+	pidfile=$piddir/$start_port
+        echo -n "Starting memcached port $start_port... "
+	[ -e $pidfile ] && [ -e /proc/$(cat $pidfile) ] && {
+		echo "cannot start memcached: already running."
+	} || {
+		$cmd -d -P $pidfile $options -c $connections -t $threads -m $memory -u $user -p $start_port && {
+			sleep 1
+			echo " OK (pid: $(cat $pidfile))" 
+		} || { 
+			echo " ERROR"
+		}
+	}
+	let start_port++
+done
+
+}
+
+stop(){
+
+for ((i=1;i<=$instances;i++))
+do
+	pidfile="$piddir/$start_port"
+        echo -n "Stopping memcached port $start_port... "
+        [ ! -e /proc/$(cat $pidfile) ] && {
+        	echo "cannot stop memcached: is not running."
+	} || {
+		kill $(cat $pidfile) && {
+			echo " OK" 
+		} || {
+			echo " ERROR"
+		}
+        }
+	let start_port++
+done
+
+}
+
+case $1 in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart)
+		stop
+		start
+	;;
+	*)
+		echo "Use: $0 { start | stop | restart }"
+	;;
+esac
