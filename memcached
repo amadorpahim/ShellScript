@@ -1,6 +1,8 @@
 #!/bin/bash
 # chkconfig: 2345 80 20
 # description: memcached
+#
+# You must create /var/run/memcached/, setting owner memcached user. 
 
 
 instances=4
