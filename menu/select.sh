@@ -7,7 +7,7 @@ PS3="Digite a opção desejada: "
 # Cada item do menu receberá um índice antes, que será
 # usado para escolha do item.
 # O item escolhido será atribuído a variável $ip e
-# o índice para a variável $REPLY
+# seu índice para a variável $REPLY
 # É possível criar a lista com comandos executados em um subshell,
 # usando, por exemplo, a sintaxe:
 # select ip in $(cat file.txt)
