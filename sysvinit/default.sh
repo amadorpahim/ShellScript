@@ -6,12 +6,12 @@
 # description: Activates/Deactivates a service
 #
 
-cmd_start="/etc/init.d/mysql start"
-cmd_stop="/etc/init.d/mysql stop"
-
 process="mysqld"
 pidfile="/var/run/mysqld/mysqld.pid"
 net="3306/tcp"
+
+cmd_start="/etc/init.d/mysql start"
+cmd_stop="/etc/init.d/mysql stop"
 
 
 verifica_processo(){
