@@ -72,11 +72,9 @@ stop(){
 echo -n "Parando processo..."
 while verifica_processo
 do 
-	[ $? -eq 0 ] && {
-		echo -n "."
-		$cmd_stop
-		sleep 1
-	}
+	echo -n "."
+	$cmd_stop
+	sleep 1
 done	 
 status_processo
 
