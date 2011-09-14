@@ -35,6 +35,7 @@ verifica_processo(){
 	}
 }
 	
+# Verifica se dentre os itens informados todos tem mesmo PID.
 [ $( {
 [ "${pid_from_pidof}" ] && echo "${pid_from_pidof}"
 [ "${pid_from_file}" ] && echo "${pid_from_file}"
@@ -48,13 +49,13 @@ status_processo(){
 verifica_processo
 case $? in
 	0)
-		echo Processo rodando
+		echo Processo rodando.
 	;;
 	1)
 		echo Falha ao procurar processo. pid, pidfile ou socket inconsistentes.
 	;;
 	2)
-		echo Processo parado
+		echo Processo parado.
 	;;
 	3)
 		echo Erro. Não achei pidfile.
