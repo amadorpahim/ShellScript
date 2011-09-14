@@ -6,10 +6,12 @@
 # description: Activates/Deactivates a service
 #
 
+# As variáveis "pidfile" e "net" são opcionais.
 process="mysqld"
 pidfile="/var/run/mysqld/mysqld.pid"
 net="3306/tcp"
 
+# Comandos para iniciar e parar o serviço. Abaixo, um exemplo [ruim] com mysql:
 cmd_start="/etc/init.d/mysql start"
 cmd_stop="/etc/init.d/mysql stop"
 
