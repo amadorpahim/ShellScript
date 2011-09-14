@@ -122,5 +122,3 @@ case $1 in
 	echo "Uso: $0 { start | stop | restart }"
 	;;
 esac
-
-exit $ret_val
