@@ -21,7 +21,6 @@ verifica_processo(){
 	}
 }
 
-
 # Se a variável $pidfile for atribuída, verifica se o
 # arquivo existe e descobre o pid pelo conteúdo do arquivo.
 [ "${pidfile}" ] &&  { [ -e "${pidfile}" ] && pid_from_file=$(< "${pidfile}") || { 
