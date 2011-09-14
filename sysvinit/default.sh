@@ -1,5 +1,7 @@
 #! /bin/bash
 #
+# Script genérico para gerenciamento de serviços.
+# 
 # chkconfig: 345 20 80
 # description: Activates/Deactivates a service
 #
@@ -35,11 +37,11 @@ verifica_processo(){
 	}
 }
 	
-# Verifica se dentre os itens informados todos tem mesmo PID.
+# Verifica se, dentre os itens informados, todos tem mesmo PID.
 [ $( {
-[ "${pid_from_pidof}" ] && echo "${pid_from_pidof}"
-[ "${pid_from_file}" ] && echo "${pid_from_file}"
-[ "${pid_from_net}" ] && echo "${pid_from_net/ /}"
+[ "${pid_from_pidof}" ] && echo "${pid_from_pidof// /}"
+[ "${pid_from_file}" ] && echo "${pid_from_file// /}"
+[ "${pid_from_net}" ] && echo "${pid_from_net// /}"
 } | uniq  | wc -l) -eq 1 ] && return 0 || return 1 
 
 }
@@ -70,19 +72,37 @@ esac
 stop(){
 
 echo -n "Parando processo..."
-while verifica_processo
-do 
-	echo -n "."
-	$cmd_stop
-	sleep 1
-done	 
+verifica_processo
+[ $? -eq 0 ]  && $cmd_stop && {
+	# Aguardando processo parar.
+	# Talvez seja interessante limitar o número de loops
+	# para não ficar eternamente testando um processo que não parou.
+	while verifica_processo
+	do 
+		echo -n "."
+		sleep 1
+	done	 
+	}
+
 status_processo
 
 }
 
 start(){
 
-$cmd_start
+echo -n "Iniciando processo..."
+verifica_processo
+[ $? -eq 2 ]  && $cmd_start && {
+	# Aguardando processo iniciar.
+	# Talvez seja interessante limitar o número de loops
+	# para não ficar eternamente testando um processo que não iniciou.
+	while ! verifica_processo
+	do 
+		echo -n "."
+		sleep 1
+	done	 
+	}
+
 status_processo
 
 }
