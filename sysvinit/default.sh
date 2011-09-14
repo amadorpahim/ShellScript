@@ -4,71 +4,105 @@
 # description: Activates/Deactivates a service
 #
 
-
-# Função de erro para facilitar as coisas 
-erro(){
-	ret_val="${1}"
-	logger -s -t "${0}" "${2}"
-	[ "${3}" == "crit" ] && exit $ret_val
-}
-
-cmd_start=""
-cmd_stop=""
+cmd_start="/etc/init.d/mysql start"
+cmd_stop="/etc/init.d/mysql stop"
 
 process="mysqld"
 pidfile="/var/run/mysqld/mysqld.pid"
 net="3306/tcp"
 
+
+verifica_processo(){
+
 # Se a variável $process for atribuida, descobre o pid
 # usando o comando "pidof"
-[ "${process}" ] && { pid_from_pidof=$(pidof "${process}") && {
-		echo pid_from_pidof "${pid_from_pidof}" 
-	} || {
-		erro 1 "Erro buscando pid pelo nome do processo" crit
+[ "${process}" ] && { pid_from_pidof=$(pidof "${process}") || {
+		return 2
 	}
 }
 
 
 # Se a variável $pidfile for atribuída, verifica se o
 # arquivo existe e descobre o pid pelo conteúdo do arquivo.
-[ "${pidfile}" ] &&  { [ -e "${pidfile}" ] && pid_from_file=$(< "${pidfile}") && {
-		echo pid_from_file "${pid_from_file}" 
-	} || { 
-		erro 2 "Erro buscando pid pelo pidfile" crit
+[ "${pidfile}" ] &&  { [ -e "${pidfile}" ] && pid_from_file=$(< "${pidfile}") || { 
+		return 3
 	}
 }
 
 # Se a variável $net for atribuída, descobre o pid
 # usando o comando fuser.
-[ "${net}" ] && { pid_from_net=$(fuser "${net}" 2> /dev/null) && {
-		echo pid_from_port "${pid_from_net}" 
-	} || {
-		erro 3 "Erro buscando pid pelo socket" crit
+[ "${net}" ] && { pid_from_net=$(fuser "${net}" 2> /dev/null) || {
+		return 4
 	}
 }
+	
+[ $( {
+[ "${pid_from_pidof}" ] && echo "${pid_from_pidof}"
+[ "${pid_from_file}" ] && echo "${pid_from_file}"
+[ "${pid_from_net}" ] && echo "${pid_from_net/ /}"
+} | uniq  | wc -l) -eq 1 ] && return 0 || return 1 
 
+}
 
-#start(){
+status_processo(){
 
-#}
+verifica_processo
+case $? in
+	0)
+		echo Processo rodando
+	;;
+	1)
+		echo Falha ao procurar processo. pid, pidfile ou socket inconsistentes.
+	;;
+	2)
+		echo Processo parado
+	;;
+	3)
+		echo Erro. Não achei pidfile.
+	;;
+	4)
+		echo Erro. Não achei socket.
+	;;
+esac
 
-#stop(){
+}
 
-#}
+stop(){
 
-#case $1 in
-#	start)
+echo -n "Parando processo..."
+while verifica_processo
+do 
+	[ $? -eq 0 ] && {
+		echo -n "."
+		$cmd_stop
+		sleep 1
+	}
+done	 
+status_processo
 
-#	;;
-#	stop)
+}
 
-#	;;
-#	restart)
+start(){
 
-#	;;
-#	*)
-#	echo "Uso: $0 { start | stop | restart }"
-#	;;
-#esac
+$cmd_start
+status_processo
+
+}
+
+case $1 in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart)
+		stop
+		start
+	;;
+	*)
+	echo "Uso: $0 { start | stop | restart }"
+	;;
+esac
 
 exit $ret_val
