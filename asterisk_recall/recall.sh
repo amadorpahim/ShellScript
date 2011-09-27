@@ -3,7 +3,7 @@
 ############################
 
 if {[llength $argv] != 2} {
-    send_user "Error: You must specify src and destination!\n"
+    send_user "ERRO: Você deve informar origem e destino para fazer o recall!\n"
     exit 1
 }
 
