@@ -1,7 +1,7 @@
 #!/bin/bash 
 sleep 1
 
-RECALL="/root/script/recall.exp"
+RECALL="/root/script/recall.sh"
 AST="/usr/sbin/asterisk"
 LOG_FACILITY="local5.warning"
 
